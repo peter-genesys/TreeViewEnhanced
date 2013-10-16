@@ -1,0 +1,8 @@
+C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\bin\Debug\TreeViewEnhanced.dll
+C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\bin\Debug\TreeViewEnhanced.pdb
+C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\bin\Debug\TreeViewEnhanced.xml
+C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.Resources.resources
+C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.vbproj.GenerateResource.Cache
+C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.dll
+C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.xml
+C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.pdb
