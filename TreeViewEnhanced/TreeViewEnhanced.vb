@@ -41,11 +41,7 @@ Public Class TreeViewEnhanced
         AddHandler MyBase.AfterCheck, AddressOf Me.AfterCheck
  
         Dim contextmenu As New ContextMenu()
-
-        'contextmenu.MenuItems.Add(_NextTransition)
-        'Dim menuitem As MenuItem = contextmenu.MenuItems.Add("Remove Ticked")
-        'AddHandler menuitem.Click, AddressOf RemoveChecked
-
+ 
         Dim expandTree As New MenuItem("Expand")
         AddHandler expandTree.Click, AddressOf expandIt
         contextmenu.MenuItems.Add(expandTree)
@@ -57,6 +53,8 @@ Public Class TreeViewEnhanced
         Dim collapseTree As New MenuItem("Collapse")
         AddHandler collapseTree.Click, AddressOf collapseIt
         contextmenu.MenuItems.Add(collapseTree)
+
+        contextmenu.MenuItems.Add("-")
 
         Dim removeTicked As New MenuItem("Remove Ticked")
         AddHandler removeTicked.Click, AddressOf RemoveChecked
@@ -376,18 +374,13 @@ Public Class TreeViewEnhanced
         Dim node As TreeNode
         'First try to find the node
         For Each node In nodes
-            'Logger.Note("node.FullPath", node.FullPath)
-            ' Logger.Note("fullPath", fullPath)
-            'Logger.Note("InStr", InStr(fullPath, node.FullPath))
             If fullPath = node.FullPath Then
                 'If node.FullPath.ToString = fullPath Then
                 'Yay found it nothing to do
-                'Logger.Dbg("Yay found it nothing to do")
                 Return True
                 'Node Full path must match first part of given full path, and current node must match exactly current segment
             ElseIf InStr(fullPath, node.FullPath.ToString) = 1 And first_segment = node.Text Then
                 'Found a parent node at least, lets look for children
-                'Logger.Dbg("Found a parent node at least, lets look for children")
                 lFound = AddNode(node.Nodes, fullPath, remainder, delim, checked)
             End If
 
@@ -395,7 +388,6 @@ Public Class TreeViewEnhanced
 
         If Not lFound And Not String.IsNullOrEmpty(first_segment) Then
             'Need to make a node
-            'Logger.Dbg("Need to make a node for " & first_segment)
             Dim newNode As TreeNode = New TreeNode(first_segment)
             newNode.Tag = first_segment
             newNode.Checked = checked
@@ -403,12 +395,9 @@ Public Class TreeViewEnhanced
             'If newNode.FullPath = fullPath Then
             If String.IsNullOrEmpty(remainder) Then
                 'We made the node!
-                'Logger.Dbg("We made the node!")
                 lFound = True
             Else
                 'Now follow this child
-                'Logger.Dbg("Now follow this child")
-                'newNode.  .ShowCheckBox = False 'Hide checkbox of any parent node.
                 lFound = AddNode(newNode.Nodes, fullPath, remainder, delim, checked)
             End If
 
