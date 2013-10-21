@@ -244,7 +244,7 @@ Public Class TreeViewEnhanced
         Dim node As TreeNode
         For Each node In givenNodes
             If Not found Then
-                If node.Text Is search Or node.Tag Is search Then
+                If node.Text = search Or node.Tag Is search Then
                     node.Checked = True
                     found = True
                 End If
