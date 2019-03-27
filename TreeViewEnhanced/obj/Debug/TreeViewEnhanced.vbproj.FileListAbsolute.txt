@@ -6,3 +6,13 @@ C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeVie
 C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.dll
 C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.xml
 C:\Users\pburgess\Documents\Visual Studio 2012\Projects\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.pdb
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\bin\Debug\TreeViewEnhanced.dll
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\bin\Debug\TreeViewEnhanced.pdb
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\bin\Debug\TreeViewEnhanced.xml
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.vbprojAssemblyReference.cache
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.Resources.resources
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.vbproj.GenerateResource.cache
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.vbproj.CoreCompileInputs.cache
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.dll
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.xml
+D:\GitRepos\TreeViewEnhanced\TreeViewEnhanced\obj\Debug\TreeViewEnhanced.pdb

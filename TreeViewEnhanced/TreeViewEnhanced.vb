@@ -418,7 +418,7 @@ Public Class TreeViewEnhanced
     End Function
 
 
-    Public Sub populateTreeFromCollection(ByRef patches As Collection)
+    Public Sub populateTreeFromCollection(ByRef patches As Collection, Optional ByVal checked As Boolean = False)
 
         MyBase.PathSeparator = "\"
         MyBase.Nodes.Clear()
@@ -429,7 +429,7 @@ Public Class TreeViewEnhanced
         For Each patch In patches
 
             'find or create each node for item
-            found = AddNode(patch)
+            found = AddNode(patch, MyBase.PathSeparator, checked)
 
         Next
 
