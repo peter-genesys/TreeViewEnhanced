@@ -260,6 +260,20 @@ Public Class TreeViewEnhanced
 
     End Sub
 
+    Public Sub TickNodes(ByVal tickList As Collection)
+
+        'Tick Nodes in the treeview
+        Dim found As Boolean = False
+        For Each tickItem In tickList
+            TickNode(tickItem.ToString, found)
+
+        Next
+
+    End Sub
+
+
+
+
     Public Shared Sub RemoveNodes(ByRef givenNodes As TreeNodeCollection, ByVal checked As Boolean)
         Dim node As TreeNode
         For i As Integer = givenNodes.Count - 1 To 0 Step -1
