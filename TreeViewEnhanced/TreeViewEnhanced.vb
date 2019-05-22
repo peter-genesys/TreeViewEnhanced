@@ -341,8 +341,8 @@ Public Class TreeViewEnhanced
 
             If node.Nodes.Count = 0 Then
                 'Leaf node
-                If node.Checked Then
-                    fullPathsList.Add(node.FullPath)
+                If node.Checked And Not fullPathsList.Contains(node.FullPath) Then
+                    fullPathsList.Add(node.FullPath, node.FullPath)
                 End If
 
             Else
