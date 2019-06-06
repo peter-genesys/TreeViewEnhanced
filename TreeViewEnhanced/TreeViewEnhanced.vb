@@ -263,8 +263,8 @@ Public Class TreeViewEnhanced
     Public Sub TickNodes(ByVal tickList As Collection)
 
         'Tick Nodes in the treeview
-        Dim found As Boolean = False
         For Each tickItem In tickList
+            Dim found As Boolean = False
             TickNode(tickItem.ToString, found)
 
         Next
