@@ -334,19 +334,20 @@ Public Class TreeViewEnhanced
         Me.RemoveNodes(False)
     End Sub
 
-
-    Public Shared Sub ReadCheckedLeafNodes(ByRef givenNodes As TreeNodeCollection, ByRef fullPathsList As Collection)
+    Private Shared Sub ReadLeafNodes(ByRef givenNodes As TreeNodeCollection, ByRef fullPathsList As Collection, Optional ByVal checkedOnly As Boolean = False)
+        'Recursive tree search
+        'Param checkedOnly - when true will ReadCheckedLeafNodes
         Dim node As TreeNode
         For Each node In givenNodes
 
             If node.Nodes.Count = 0 Then
                 'Leaf node
-                If node.Checked And Not fullPathsList.Contains(node.FullPath) Then
+                If (Not checkedOnly Or node.Checked) And Not fullPathsList.Contains(node.FullPath) Then
                     fullPathsList.Add(node.FullPath, node.FullPath)
                 End If
 
             Else
-                ReadCheckedLeafNodes(node.Nodes, fullPathsList)
+                ReadLeafNodes(node.Nodes, fullPathsList, checkedOnly)
 
             End If
 
@@ -357,7 +358,13 @@ Public Class TreeViewEnhanced
 
     Public Sub ReadCheckedLeafNodes(ByRef fullPathsList As Collection)
 
-        ReadCheckedLeafNodes(MyBase.Nodes, fullPathsList)
+        ReadLeafNodes(MyBase.Nodes, fullPathsList, True)
+
+    End Sub
+
+    Public Sub ReadAllLeafNodes(ByRef fullPathsList As Collection)
+
+        ReadLeafNodes(MyBase.Nodes, fullPathsList, False)
 
     End Sub
 
