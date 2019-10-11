@@ -246,16 +246,12 @@ Public Class TreeViewEnhanced
         For Each node In givenNodes
             'Console.WriteLine(node.Text)
             If Not found Then
-                If matchPath Then
-                    If path & node.Text = search Then
-                        node.Checked = True
-                        found = True
-                    End If
-                Else
-                    If node.Text = search Or node.Tag Is search Then
-                        node.Checked = True
-                        found = True
-                    End If
+                If (matchPath And path & node.Text = search) Or
+                   (Not matchPath And (node.Text = search Or node.Tag Is search)) Then
+
+                    node.Checked = True
+                    found = True
+
                 End If
 
                 TickNode(node.Nodes, search, found, matchPath, path & node.Text & "\")
