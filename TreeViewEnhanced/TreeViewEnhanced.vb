@@ -240,32 +240,42 @@ Public Class TreeViewEnhanced
     End Sub
 
 
-    Public Shared Sub TickNode(ByRef givenNodes As TreeNodeCollection, ByVal search As String, ByRef found As Boolean)
+    Public Shared Sub TickNode(ByRef givenNodes As TreeNodeCollection, ByVal search As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "")
+        'Console.WriteLine("TickNode:" & search & ":" & path)
         Dim node As TreeNode
         For Each node In givenNodes
+            'Console.WriteLine(node.Text)
             If Not found Then
-                If node.Text = search Or node.Tag Is search Then
-                    node.Checked = True
-                    found = True
+                If matchPath Then
+                    If path & node.Text = search Then
+                        node.Checked = True
+                        found = True
+                    End If
+                Else
+                    If node.Text = search Or node.Tag Is search Then
+                        node.Checked = True
+                        found = True
+                    End If
                 End If
-                TickNode(node.nodes, search, found)
+
+                TickNode(node.Nodes, search, found, matchPath, path & node.Text & "\")
             End If
         Next
 
     End Sub
 
-    Public Sub TickNode(ByVal search As String, ByRef found As Boolean)
+    Public Sub TickNode(ByVal search As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "")
 
-        TickNode(MyBase.Nodes, search, found)
+        TickNode(MyBase.Nodes, search, found, matchPath, path)
 
     End Sub
 
-    Public Sub TickNodes(ByVal tickList As Collection)
+    Public Sub TickNodes(ByVal tickList As Collection, Optional ByVal matchPath As Boolean = False)
 
         'Tick Nodes in the treeview
         For Each tickItem In tickList
             Dim found As Boolean = False
-            TickNode(tickItem.ToString, found)
+            TickNode(tickItem.ToString, found, matchPath, "")
 
         Next
 
