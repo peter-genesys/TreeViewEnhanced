@@ -240,7 +240,7 @@ Public Class TreeViewEnhanced
     End Sub
 
 
-    Public Shared Sub TickNode(ByRef givenNodes As TreeNodeCollection, ByVal search As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "")
+    Public Shared Sub TickNode(ByRef givenNodes As TreeNodeCollection, ByVal search As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
         'Console.WriteLine("TickNode:" & search & ":" & path)
         Dim node As TreeNode
         For Each node In givenNodes
@@ -249,29 +249,29 @@ Public Class TreeViewEnhanced
                 If (matchPath And path & node.Text = search) Or
                    (Not matchPath And (node.Text = search Or node.Tag Is search)) Then
 
-                    node.Checked = True
+                    node.Checked = checked
                     found = True
 
                 End If
 
-                TickNode(node.Nodes, search, found, matchPath, path & node.Text & "\")
+                TickNode(node.Nodes, search, found, matchPath, path & node.Text & "\", checked)
             End If
         Next
 
     End Sub
 
-    Public Sub TickNode(ByVal search As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "")
+    Public Sub TickNode(ByVal search As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
 
-        TickNode(MyBase.Nodes, search, found, matchPath, path)
+        TickNode(MyBase.Nodes, search, found, matchPath, path, checked)
 
     End Sub
 
-    Public Sub TickNodes(ByVal tickList As Collection, Optional ByVal matchPath As Boolean = False)
+    Public Sub TickNodes(ByVal tickList As Collection, Optional ByVal matchPath As Boolean = False, Optional ByVal checked As Boolean = True)
 
         'Tick Nodes in the treeview
         For Each tickItem In tickList
             Dim found As Boolean = False
-            TickNode(tickItem.ToString, found, matchPath, "")
+            TickNode(tickItem.ToString, found, matchPath, "", checked)
 
         Next
 
