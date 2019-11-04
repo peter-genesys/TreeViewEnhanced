@@ -277,7 +277,31 @@ Public Class TreeViewEnhanced
 
     End Sub
 
+    Public Shared Sub RenameNode(ByRef givenNodes As TreeNodeCollection, ByVal search As String, ByVal newName As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
+        'Console.WriteLine("RenameNode:" & search & ":" & path)
+        Dim node As TreeNode
+        For Each node In givenNodes
+            'Console.WriteLine(node.Text)
+            If Not found Then
+                If (matchPath And path & node.Text = search) Or
+                   (Not matchPath And (node.Text = search Or node.Tag Is search)) Then
 
+                    node.Name = newName
+                    found = True
+
+                End If
+
+                RenameNode(node.Nodes, search, newName, found, matchPath, path & node.Text & "\", checked)
+            End If
+        Next
+
+    End Sub
+
+    Public Shared Sub RenameNode(ByVal search As String, ByVal newName As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
+
+        RenameNode(MyBase.Nodes, search, newName, found, matchPath, path, checked)
+
+    End Sub
 
 
     Public Shared Sub RemoveNodes(ByRef givenNodes As TreeNodeCollection, ByVal checked As Boolean)
