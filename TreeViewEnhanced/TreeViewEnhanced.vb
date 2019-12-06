@@ -297,7 +297,12 @@ Public Class TreeViewEnhanced
 
     End Sub
 
-    Public Shared Sub RenameNode(ByVal search As String, ByVal newName As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
+    Public Sub RenameNode(ByVal search As String,
+                                 ByVal newName As String,
+                                 ByRef found As Boolean,
+                                 Optional ByVal matchPath As Boolean = False,
+                                 Optional ByVal path As String = "",
+                                 Optional ByVal checked As Boolean = True)
 
         RenameNode(MyBase.Nodes, search, newName, found, matchPath, path, checked)
 
@@ -469,10 +474,12 @@ Public Class TreeViewEnhanced
     End Function
 
 
-    Public Sub populateTreeFromCollection(ByRef patches As Collection, Optional ByVal checked As Boolean = False)
+    Public Sub populateTreeFromCollection(ByRef patches As Collection, Optional ByVal checked As Boolean = False, Optional clearNodes As Boolean = True)
 
         MyBase.PathSeparator = "\"
-        MyBase.Nodes.Clear()
+        If clearNodes Then
+            MyBase.Nodes.Clear()
+        End If
 
         'copy each item from listbox
         Dim found As Boolean = False
@@ -483,6 +490,14 @@ Public Class TreeViewEnhanced
             found = AddNode(patch, MyBase.PathSeparator, checked)
 
         Next
+
+    End Sub
+
+    Public Sub appendTreeFromCollection(ByRef patches As Collection, Optional ByVal checked As Boolean = False)
+
+        populateTreeFromCollection(patches:=patches,
+                                   checked:=checked,
+                                   clearNodes:=False)
 
     End Sub
 
