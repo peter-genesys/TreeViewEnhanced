@@ -377,8 +377,22 @@ Public Class TreeViewEnhanced
 
             If node.Nodes.Count = 0 Then
                 'Leaf node
-                If (Not checkedOnly Or node.Checked) And Not fullPathsList.Contains(node.FullPath) Then
-                    fullPathsList.Add(node.FullPath, node.FullPath)
+                If (Not checkedOnly Or node.Checked) Then
+
+                    If node.Name = "" Then
+                        If Not fullPathsList.Contains(node.FullPath) Then
+                            fullPathsList.Add(node.FullPath, node.FullPath)
+                        End If
+                        'Node 
+                    Else
+                        'Node name is populated so using this as the key
+                        If Not fullPathsList.Contains(node.Name) Then
+                            fullPathsList.Add(node.FullPath, node.Name)
+                        End If
+
+                    End If
+
+
                 End If
 
             Else
@@ -421,7 +435,12 @@ Public Class TreeViewEnhanced
     End Function
 
 
-    Public Shared Function AddNode(ByRef nodes As TreeNodeCollection, ByVal fullPath As String, ByVal remainderPath As String, Optional ByVal delim As String = "\", Optional ByVal checked As Boolean = False) As Boolean
+    Public Shared Function AddNode(ByRef nodes As TreeNodeCollection,
+                                   ByVal fullPath As String,
+                                   ByVal remainderPath As String,
+                                   Optional ByVal delim As String = "\",
+                                   Optional ByVal checked As Boolean = False,
+                                   Optional ByVal data As String = "") As Boolean
         'Commented out the logging, as it severely reduces performance.
         Dim first_segment As String = getFirstSegment(remainderPath, delim)
         Dim remainder As String = dropFirstSegment(remainderPath, delim)
@@ -437,7 +456,12 @@ Public Class TreeViewEnhanced
                 'Node Full path must match first part of given full path, and current node must match exactly current segment
             ElseIf InStr(fullPath, node.FullPath.ToString) = 1 And first_segment = node.Text Then
                 'Found a parent node at least, lets look for children
-                lFound = AddNode(node.Nodes, fullPath, remainder, delim, checked)
+                lFound = AddNode(nodes:=node.Nodes,
+                                 fullPath:=fullPath,
+                                 remainderPath:=remainder,
+                                 delim:=delim,
+                                 checked:=checked,
+                                 data:=data)
             End If
 
         Next
@@ -447,6 +471,7 @@ Public Class TreeViewEnhanced
             Dim newNode As TreeNode = New TreeNode(first_segment)
             newNode.Tag = first_segment
             newNode.Checked = checked
+            newNode.Name = data
             nodes.Add(newNode)
             'If newNode.FullPath = fullPath Then
             If String.IsNullOrEmpty(remainder) Then
@@ -454,12 +479,18 @@ Public Class TreeViewEnhanced
                 lFound = True
             Else
                 'Now follow this child
-                lFound = AddNode(newNode.Nodes, fullPath, remainder, delim, checked)
+                lFound = AddNode(nodes:=newNode.Nodes,
+                                 fullPath:=fullPath,
+                                 remainderPath:=remainder,
+                                 delim:=delim,
+                                 checked:=checked,
+                                 data:=data)
+
             End If
 
         End If
         If Not lFound Then
-            MsgBox("Oops not found. Bad coding?")
+            MsgBox("Oops TreeView Node not found. Bad coding?")
         End If
         Return lFound
 
@@ -467,9 +498,17 @@ Public Class TreeViewEnhanced
     End Function
 
 
-    Public Function AddNode(ByVal fullPath As String, Optional ByVal delim As String = "\", Optional ByVal checked As Boolean = False) As Boolean
+    Public Function AddNode(ByVal fullPath As String,
+                            Optional ByVal delim As String = "\",
+                            Optional ByVal checked As Boolean = False,
+                            Optional ByVal data As String = "") As Boolean
 
-        Return AddNode(MyBase.Nodes, fullPath, fullPath, delim, checked)
+        Return AddNode(MyBase.Nodes,
+                       fullPath:=fullPath,
+                       remainderPath:=fullPath,
+                       delim:=delim,
+                       checked:=checked,
+                       data:=data)
 
     End Function
 
@@ -487,11 +526,61 @@ Public Class TreeViewEnhanced
         For Each patch In patches
 
             'find or create each node for item
-            found = AddNode(patch, MyBase.PathSeparator, checked)
+            found = AddNode(fullPath:=patch,
+                            delim:=MyBase.PathSeparator,
+                            checked:=checked)
 
         Next
 
     End Sub
+
+    Public Sub populateTreeFromDict(ByRef patches As Dictionary(Of String, Object),
+                                    Optional ByVal checked As Boolean = False,
+                                    Optional clearNodes As Boolean = True,
+                                    Optional sortByKey As Boolean = False)
+
+        MyBase.PathSeparator = "\"
+        If clearNodes Then
+            MyBase.Nodes.Clear()
+        End If
+
+
+        Dim found As Boolean = False
+
+
+        ' Get list of keys.
+        Dim keys As List(Of String) = patches.Keys.ToList
+
+        If sortByKey Then
+            ' Sort the keys.
+            keys.Sort()
+        End If
+
+
+        Dim orderedCollection As Collection = New Collection()
+
+        For Each key In keys
+
+            'find or create each node for item
+            found = AddNode(fullPath:=patches.Item(key).ToString,
+                            delim:=MyBase.PathSeparator,
+                            checked:=checked,
+                            data:=key)
+        Next
+
+    End Sub
+
+
+
+    Public Sub appendTreeFromDict(ByRef patches As Dictionary(Of String, Object),
+                                  Optional ByVal checked As Boolean = False)
+
+        populateTreeFromDict(patches:=patches,
+                                   checked:=checked,
+                                   clearNodes:=False)
+
+    End Sub
+
 
     Public Sub appendTreeFromCollection(ByRef patches As Collection, Optional ByVal checked As Boolean = False)
 
