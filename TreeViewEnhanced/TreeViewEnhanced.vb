@@ -247,7 +247,8 @@ Public Class TreeViewEnhanced
             'Console.WriteLine(node.Text)
             If Not found Then
                 If (matchPath And path & node.Text = search) Or
-                   (Not matchPath And (node.Text = search Or node.Tag Is search)) Then
+                   (Not matchPath And (node.Text = search Or node.Name = search Or
+                                       node.Tag Is search)) Then 'WHY DOES THIS USES "Is"? The Is operator determines if two object references refer to the same object. SUSPECT TYPO
 
                     node.Checked = checked
                     found = True
@@ -277,6 +278,34 @@ Public Class TreeViewEnhanced
 
     End Sub
 
+    Public Sub TickNodesByValue(ByVal tickList As Dictionary(Of String, String), Optional ByVal matchPath As Boolean = True, Optional ByVal checked As Boolean = True)
+
+        'Match on the path
+
+        'Tick Nodes in the treeview
+        For Each tickItem In tickList
+            Dim found As Boolean = False
+            TickNode(tickItem.Value, found, matchPath, "", checked)
+
+        Next
+
+    End Sub
+
+    '@TODO THIS PROBABLY WILL NEED TO CHANGE TO MATCH ON NODE.NAME ONLY.
+    Public Sub TickNodesByKey(ByVal tickList As Dictionary(Of String, String), Optional ByVal matchPath As Boolean = False, Optional ByVal checked As Boolean = True)
+
+        'Match on the name (key) or the leaf node value only, not the full path.
+
+        'Tick Nodes in the treeview
+        For Each tickItem In tickList
+            Dim found As Boolean = False
+            TickNode(tickItem.Key, found, matchPath, "", checked)
+
+        Next
+
+    End Sub
+
+
     Public Shared Sub RenameNode(ByRef givenNodes As TreeNodeCollection, ByVal search As String, ByVal newName As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
         'Console.WriteLine("RenameNode:" & search & ":" & path)
         Dim node As TreeNode
@@ -284,7 +313,7 @@ Public Class TreeViewEnhanced
             'Console.WriteLine(node.Text)
             If Not found Then
                 If (matchPath And path & node.Text = search) Or
-                   (Not matchPath And (node.Text = search Or node.Tag Is search)) Then
+                   (Not matchPath And (node.Text = search Or node.Tag Is search)) Then 'WHY DOES THIS USES "Is"? The Is operator determines if two object references refer to the same object. SUSPECT TYPO
 
                     node.Name = newName
                     found = True
@@ -387,7 +416,8 @@ Public Class TreeViewEnhanced
                     Else
                         'Node name is populated so using this as the key
                         If Not fullPathsList.Contains(node.Name) Then
-                            fullPathsList.Add(node.FullPath, node.Name)
+                            fullPathsList.Add(Item:=node.FullPath,
+                                              Key:=node.Name)
                         End If
 
                     End If
@@ -436,7 +466,8 @@ Public Class TreeViewEnhanced
                     Else
                         'Node name is populated so using this as the key
                         If Not fullPathsList.ContainsKey(node.Name) Then
-                            fullPathsList.Add(node.FullPath, node.Name)
+                            fullPathsList.Add(key:=node.Name,
+                                              value:=node.FullPath)
                         End If
 
                     End If
