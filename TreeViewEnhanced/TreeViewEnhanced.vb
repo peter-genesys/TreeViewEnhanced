@@ -521,8 +521,8 @@ Public Class TreeViewEnhanced
         End If
 
         'copy each item from listbox
-        Dim found As Boolean = False
-        Dim patch As String = Nothing
+        Dim found As Boolean
+        Dim patch As String
         For Each patch In patches
 
             'find or create each node for item
@@ -534,7 +534,15 @@ Public Class TreeViewEnhanced
 
     End Sub
 
-    Public Sub populateTreeFromDict(ByRef patches As Dictionary(Of String, Object),
+    Public Sub appendTreeFromCollection(ByRef patches As Collection, Optional ByVal checked As Boolean = False)
+
+        populateTreeFromCollection(patches:=patches,
+                                   checked:=checked,
+                                   clearNodes:=False)
+
+    End Sub
+
+    Public Sub populateTreeFromDict(ByRef patches As Dictionary(Of String, String), 'object
                                     Optional ByVal checked As Boolean = False,
                                     Optional clearNodes As Boolean = True,
                                     Optional sortByKey As Boolean = False)
@@ -545,7 +553,7 @@ Public Class TreeViewEnhanced
         End If
 
 
-        Dim found As Boolean = False
+        Dim found As Boolean
 
 
         ' Get list of keys.
@@ -572,7 +580,7 @@ Public Class TreeViewEnhanced
 
 
 
-    Public Sub appendTreeFromDict(ByRef patches As Dictionary(Of String, Object),
+    Public Sub appendTreeFromDict(ByRef patches As Dictionary(Of String, String), 'object
                                   Optional ByVal checked As Boolean = False)
 
         populateTreeFromDict(patches:=patches,
@@ -582,13 +590,7 @@ Public Class TreeViewEnhanced
     End Sub
 
 
-    Public Sub appendTreeFromCollection(ByRef patches As Collection, Optional ByVal checked As Boolean = False)
 
-        populateTreeFromCollection(patches:=patches,
-                                   checked:=checked,
-                                   clearNodes:=False)
-
-    End Sub
 
 
 
