@@ -294,7 +294,7 @@ Public Class TreeViewEnhanced
     '@TODO THIS PROBABLY WILL NEED TO CHANGE TO MATCH ON NODE.NAME ONLY.
     Public Sub TickNodesByKey(ByVal tickList As Dictionary(Of String, String), Optional ByVal matchPath As Boolean = False, Optional ByVal checked As Boolean = True)
 
-        'Match on the name (key) or the leaf node value only, not the full path.
+        'Match on the name (key) of the leaf node value only, not the full path.
 
         'Tick Nodes in the treeview
         For Each tickItem In tickList
@@ -305,7 +305,7 @@ Public Class TreeViewEnhanced
 
     End Sub
 
-
+    'Not Used in GitPatcher
     Public Shared Sub RenameNode(ByRef givenNodes As TreeNodeCollection, ByVal search As String, ByVal newName As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
         'Console.WriteLine("RenameNode:" & search & ":" & path)
         Dim node As TreeNode
@@ -326,6 +326,7 @@ Public Class TreeViewEnhanced
 
     End Sub
 
+    'Not Used in GitPatcher
     Public Sub RenameNode(ByVal search As String,
                                  ByVal newName As String,
                                  ByRef found As Boolean,
@@ -552,12 +553,13 @@ Public Class TreeViewEnhanced
             Dim newNode As TreeNode = New TreeNode(first_segment)
             newNode.Tag = first_segment
             newNode.Checked = checked
-            newNode.Name = data
+            'newNode.Name = data
             nodes.Add(newNode)
             'If newNode.FullPath = fullPath Then
             If String.IsNullOrEmpty(remainder) Then
-                'We made the node!
+                'We made a leaf node!
                 lFound = True
+                newNode.Name = data 'add the data to the leaf only.
             Else
                 'Now follow this child
                 lFound = AddNode(nodes:=newNode.Nodes,
