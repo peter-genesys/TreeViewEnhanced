@@ -417,6 +417,56 @@ Public Class TreeViewEnhanced
 
     End Sub
 
+
+    Private Shared Sub ReadLeafNodes(ByRef givenNodes As TreeNodeCollection, ByRef fullPathsList As Dictionary(Of String, String), Optional ByVal checkedOnly As Boolean = False)
+        'Recursive tree search
+        'Param checkedOnly - when true will ReadCheckedLeafNodes
+        Dim node As TreeNode
+        For Each node In givenNodes
+
+            If node.Nodes.Count = 0 Then
+                'Leaf node
+                If (Not checkedOnly Or node.Checked) Then
+
+                    If node.Name = "" Then
+                        If Not fullPathsList.ContainsKey(node.FullPath) Then
+                            fullPathsList.Add(node.FullPath, node.FullPath)
+                        End If
+                        'Node 
+                    Else
+                        'Node name is populated so using this as the key
+                        If Not fullPathsList.ContainsKey(node.Name) Then
+                            fullPathsList.Add(node.FullPath, node.Name)
+                        End If
+
+                    End If
+
+
+                End If
+
+            Else
+                ReadLeafNodes(node.Nodes, fullPathsList, checkedOnly)
+
+            End If
+
+        Next
+
+    End Sub
+
+
+    Public Sub ReadCheckedLeafNodes(ByRef fullPathsList As Dictionary(Of String, String))
+
+        ReadLeafNodes(MyBase.Nodes, fullPathsList, True)
+
+    End Sub
+
+    Public Sub ReadAllLeafNodes(ByRef fullPathsList As Dictionary(Of String, String))
+
+        ReadLeafNodes(MyBase.Nodes, fullPathsList, False)
+
+    End Sub
+
+
     Private Shared Function getFirstSegment(ByVal ipath As String, ByVal idelim As String) As String
 
         Return ipath.Split(CChar(idelim))(0)
