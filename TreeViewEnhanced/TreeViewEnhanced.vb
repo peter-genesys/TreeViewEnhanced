@@ -240,15 +240,19 @@ Public Class TreeViewEnhanced
     End Sub
 
 
-    Public Shared Sub TickNode(ByRef givenNodes As TreeNodeCollection, ByVal search As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
+    Public Shared Sub TickNode(ByRef givenNodes As TreeNodeCollection,
+                               ByVal search As String,
+                               ByRef found As Boolean,
+                               Optional ByVal matchPath As Boolean = False,
+                               Optional ByVal path As String = "",
+                               Optional ByVal checked As Boolean = True)
         'Console.WriteLine("TickNode:" & search & ":" & path)
         Dim node As TreeNode
         For Each node In givenNodes
             'Console.WriteLine(node.Text)
             If Not found Then
                 If (matchPath And path & node.Text = search) Or
-                   (Not matchPath And (node.Text = search Or node.Name = search Or
-                                       node.Tag Is search)) Then 'WHY DOES THIS USES "Is"? The Is operator determines if two object references refer to the same object. SUSPECT TYPO
+                   (Not matchPath And (node.Text = search Or node.Name = search Or node.Tag Is search)) Then 'WHY DOES THIS USES "Is"? The Is operator determines if two object references refer to the same object. SUSPECT TYPO
 
                     node.Checked = checked
                     found = True
@@ -261,52 +265,85 @@ Public Class TreeViewEnhanced
 
     End Sub
 
-    Public Sub TickNode(ByVal search As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
+    Public Sub TickNode(ByVal search As String,
+                        ByRef found As Boolean,
+                        Optional ByVal matchPath As Boolean = False,
+                        Optional ByVal path As String = "",
+                        Optional ByVal checked As Boolean = True)
 
-        TickNode(MyBase.Nodes, search, found, matchPath, path, checked)
+        TickNode(givenNodes:=MyBase.Nodes,
+                 search:=search,
+                 found:=found,
+                 matchPath:=matchPath,
+                 path:=path,
+                 checked:=checked)
 
     End Sub
 
-    Public Sub TickNodes(ByVal tickList As Collection, Optional ByVal matchPath As Boolean = False, Optional ByVal checked As Boolean = True)
+    Public Sub TickNodes(ByVal tickList As Collection,
+                         Optional ByVal matchPath As Boolean = False,
+                         Optional ByVal checked As Boolean = True)
 
         'Tick Nodes in the treeview
         For Each tickItem In tickList
             Dim found As Boolean = False
-            TickNode(tickItem.ToString, found, matchPath, "", checked)
+            TickNode(search:=tickItem.ToString,
+                     found:=found,
+                     matchPath:=matchPath,
+                     path:="",
+                     checked:=checked)
 
         Next
 
     End Sub
 
-    Public Sub TickNodesByValue(ByVal tickList As Dictionary(Of String, String), Optional ByVal matchPath As Boolean = True, Optional ByVal checked As Boolean = True)
+    Public Sub TickNodesByValue(ByVal tickList As Dictionary(Of String, String),
+                                Optional ByVal matchPath As Boolean = True,
+                                Optional ByVal checked As Boolean = True)
 
         'Match on the path
 
         'Tick Nodes in the treeview
         For Each tickItem In tickList
             Dim found As Boolean = False
-            TickNode(tickItem.Value, found, matchPath, "", checked)
+            TickNode(search:=tickItem.Value,
+                     found:=found,
+                     matchPath:=matchPath,
+                     path:="",
+                     checked:=checked)
 
         Next
 
     End Sub
 
     '@TODO THIS PROBABLY WILL NEED TO CHANGE TO MATCH ON NODE.NAME ONLY.
-    Public Sub TickNodesByKey(ByVal tickList As Dictionary(Of String, String), Optional ByVal matchPath As Boolean = False, Optional ByVal checked As Boolean = True)
+    Public Sub TickNodesByKey(ByVal tickList As Dictionary(Of String, String),
+                              Optional ByVal matchPath As Boolean = False,
+                              Optional ByVal checked As Boolean = True)
 
         'Match on the name (key) of the leaf node value only, not the full path.
 
         'Tick Nodes in the treeview
         For Each tickItem In tickList
             Dim found As Boolean = False
-            TickNode(tickItem.Key, found, matchPath, "", checked)
+            TickNode(search:=tickItem.Key,
+                     found:=found,
+                     matchPath:=matchPath,
+                     path:="",
+                     checked:=checked)
 
         Next
 
     End Sub
 
     'Not Used in GitPatcher
-    Public Shared Sub RenameNode(ByRef givenNodes As TreeNodeCollection, ByVal search As String, ByVal newName As String, ByRef found As Boolean, Optional ByVal matchPath As Boolean = False, Optional ByVal path As String = "", Optional ByVal checked As Boolean = True)
+    Public Shared Sub RenameNode(ByRef givenNodes As TreeNodeCollection,
+                                 ByVal search As String,
+                                 ByVal newName As String,
+                                 ByRef found As Boolean,
+                                 Optional ByVal matchPath As Boolean = False,
+                                 Optional ByVal path As String = "",
+                                 Optional ByVal checked As Boolean = True)
         'Console.WriteLine("RenameNode:" & search & ":" & path)
         Dim node As TreeNode
         For Each node In givenNodes
@@ -320,7 +357,13 @@ Public Class TreeViewEnhanced
 
                 End If
 
-                RenameNode(node.Nodes, search, newName, found, matchPath, path & node.Text & "\", checked)
+                RenameNode(givenNodes:=node.Nodes,
+                           search:=search,
+                           newName:=newName,
+                           found:=found,
+                           matchPath:=matchPath,
+                           path:=path & node.Text & "\",
+                           checked:=checked)
             End If
         Next
 
@@ -334,7 +377,13 @@ Public Class TreeViewEnhanced
                                  Optional ByVal path As String = "",
                                  Optional ByVal checked As Boolean = True)
 
-        RenameNode(MyBase.Nodes, search, newName, found, matchPath, path, checked)
+        RenameNode(givenNodes:=MyBase.Nodes,
+                   search:=search,
+                   newName:=newName,
+                   found:=found,
+                   matchPath:=matchPath,
+                   path:=path,
+                   checked:=checked)
 
     End Sub
 
@@ -551,7 +600,7 @@ Public Class TreeViewEnhanced
         If Not lFound And Not String.IsNullOrEmpty(first_segment) Then
             'Need to make a node
             Dim newNode As TreeNode = New TreeNode(first_segment)
-            newNode.Tag = first_segment
+            newNode.Tag = first_segment 'PAB not sure, but i think Tag represents the value of just the corresponding component of the fullpath.
             newNode.Checked = checked
             'newNode.Name = data
             nodes.Add(newNode)
@@ -559,7 +608,7 @@ Public Class TreeViewEnhanced
             If String.IsNullOrEmpty(remainder) Then
                 'We made a leaf node!
                 lFound = True
-                newNode.Name = data 'add the data to the leaf only.
+                newNode.Name = data 'add the data to the leaf only. This is to be used a the key.
             Else
                 'Now follow this child
                 lFound = AddNode(nodes:=newNode.Nodes,
