@@ -350,7 +350,7 @@ Public Class TreeViewEnhanced
             'Console.WriteLine(node.Text)
             If Not found Then
                 If (matchPath And path & node.Text = search) Or
-                   (Not matchPath And (node.Text = search Or node.Tag Is search)) Then 'WHY DOES THIS USES "Is"? The Is operator determines if two object references refer to the same object. SUSPECT TYPO
+                   (Not matchPath And (node.Text = search Or node.Tag.ToString = search)) Then
 
                     node.Name = newName
                     found = True
@@ -420,13 +420,57 @@ Public Class TreeViewEnhanced
 
     End Sub
 
+    Public Sub RemoveItem(ByRef givenNodes As TreeNodeCollection,
+                          ByVal item As String,
+                  Optional ByVal matchText As Boolean = False,
+                  Optional ByVal matchTag As Boolean = False)
 
-    'Sub openReport(ByVal Sender As System.Object, ByVal e As System.EventArgs)
-    '    Dim sReportPath As String = CType(Sender, ToolStripItem).Tag.ToString()
-    '    MessageBox.Show(sReportPath)
-    'End Sub
 
- 
+
+        For i As Integer = givenNodes.Count - 1 To 0 Step -1
+
+            Dim node As TreeNode = givenNodes(i)
+
+            If node.Nodes.Count > 0 Then
+                'non-leaf
+                RemoveItem(node.Nodes, item, matchText, matchTag)
+                'if no leaves left, remove the branch
+                If node.Nodes.Count = 0 Then
+                    givenNodes.Remove(node)
+                End If
+
+            Else
+                'leaf
+                If (matchText AndAlso node.Text = item) Or
+                   (matchTag AndAlso node.Tag.ToString = item) Then
+                    givenNodes.RemoveAt(i)
+                    'removedItem = True
+                    'Exit For 'assume there is a unique list, so finish searching once we have it.
+                End If
+            End If
+
+        Next i
+
+    End Sub
+
+    Public Sub RemoveItem(ByVal item As String,
+                  Optional ByVal matchText As Boolean = False,
+                  Optional ByVal matchTag As Boolean = False)
+
+        RemoveItem(MyBase.Nodes, item, matchText, matchTag)
+
+    End Sub
+
+    Public Sub RemoveItems(ByRef items As Collection,
+                  Optional ByVal matchText As Boolean = False,
+                  Optional ByVal matchTag As Boolean = False)
+
+        For Each item As String In items
+            RemoveItem(item, matchText, matchTag)
+        Next item
+
+    End Sub
+
 
     Sub collapseIt(ByVal Sender As System.Object, ByVal e As System.EventArgs)
         Me.CollapseAll()
